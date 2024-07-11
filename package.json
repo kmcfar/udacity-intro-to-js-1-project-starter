@@ -1,0 +1,19 @@
+{
+  "name": "udacity-intro-to-js-1-project-starter",
+  "version": "1.0.0",
+  "description": "udacity-project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kmcfar/udacity-intro-to-js-1-project-starter.git"
+  },
+  "author": "kevinm",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kmcfar/udacity-intro-to-js-1-project-starter/issues"
+  },
+  "homepage": "https://github.com/kmcfar/udacity-intro-to-js-1-project-starter#readme"
+}
