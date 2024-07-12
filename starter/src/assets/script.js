@@ -1,6 +1,28 @@
 /* Create an array named products which you will use to add all of your product object literals that you create in the next step. */
 
-const products = [];
+const products = [
+    {
+      name: "cherry",
+      price: 5,
+      quantity: 0,
+      productId: 100,
+      image: 'images/cherry.jpg',
+    },
+    {
+      name: "orange",
+      price: 6,
+      quantity: 0,
+      productId: 200,
+      image: 'images/orange.jpg',
+    },
+    {
+      name: "strawberry",
+      price: 7,
+      quantity: 0,
+      productId: 300,
+      image: 'images/strawberry.jpg',
+    }
+]; // we have 3 products in our shop
 
 /* Create 3 or more product objects using object literal notation 
    Each product should include five properties
@@ -10,33 +32,6 @@ const products = [];
    - productId: unique id for the product (number)
    - image: picture of product (url string)
 */
-
-let cherry = {
-  name: "cherry",
-  price: 5,
-  quantity: 0,
-  productId: 100,
-  image: 'images/cherry.jpg',
-};
-products.push(cherry);
-
-let orange = {
-  name: "orange",
-  price: 6,
-  quantity: 0,
-  productId: 200,
-  image: 'images/orange.jpg',
-};
-products.push(orange);
-
-let strawberry = {
-  name: "strwaberry",
-  price: 7,
-  quantity: 0,
-  productId: 300,
-  image: 'images/strawberry.jpg',
-};
-products.push(strawberry);
 
 /* Images provided in /images folder. All images from Unsplash.com
    - cherry.jpg by Mae Mu
@@ -54,8 +49,8 @@ const cart = [];
   - if the product is not already in the cart, add it to the cart
 */
 
-//function to get the product object from the id
-function checkedProduct(id) {
+//helper function to get the product object from the id
+function productObjectLookup(id) {
   return products.find(({ productId }) => productId === id)
 }
 
@@ -67,11 +62,11 @@ function addProductToCart(id) {
       prod.quantity += 1;
     };
   });
-  //check if the product is already in the cart
+  //check if the product is already in the cart. If it is not, then add it to the cart
   if(!cart.some(function(prod){
     return prod.productId === id;
   })) {
-    cart.push(checkedProduct(id));
+    cart.push(productObjectLookup(id));
   };
 }
 
@@ -81,7 +76,7 @@ function addProductToCart(id) {
 */
 
 function increaseQuantity(id) {
-  checkedProduct(id).quantity += 1;
+  productObjectLookup(id).quantity += 1;
 }
 
 /* Create a function named decreaseQuantity that takes in the productId as an argument
@@ -90,20 +85,20 @@ function increaseQuantity(id) {
   - if the function decreases the quantity to 0, the product is removed from the cart
 */
 function removeFromCart(id) {
-  let index = cart.findIndex(function(prod){prod.productId === id})
-    cart.splice(index, 1);
+  let index = cart.findIndex(function(prod){return prod.productId === id}) // find the item in the array
+  if(index !== -1) {
+    cart.splice(index, 1); 
+  }; // remove the item
 }
 
 function decreaseQuantity(id) {
-  if(checkedProduct(id).quantity > 0){
-    checkedProduct(id).quantity -= 1
+  if(productObjectLookup(id).quantity > 0){
+    productObjectLookup(id).quantity -= 1
   }
-  if(checkedProduct(id).quantity === 0) {
+  if(productObjectLookup(id).quantity === 0) {
     removeFromCart(id);
   }
 }
-
-
 
 /* Create a function named removeProductFromCart that takes in the productId as an argument
   - removeProductFromCart should get the correct product based on the productId
@@ -112,7 +107,7 @@ function decreaseQuantity(id) {
 */
 
 function removeProductFromCart(id) {
-  checkedProduct(id).quantity = 0;
+  productObjectLookup(id).quantity = 0;
   removeFromCart(id);
 }
 
@@ -133,7 +128,10 @@ function cartTotal() {
 /* Create a function called emptyCart that empties the products from the cart */
 
 function emptyCart() {
-  cart = [];
+  cart.splice(0, cart.length); // empties cart
+  products.forEach(function(prod, index) {
+    products.quantity = 0;
+  }); // resets the quantities
 }
 
 /* Create a function named pay that takes in an amount as an argument
@@ -143,15 +141,17 @@ function emptyCart() {
   Hint: cartTotal function gives us cost of all the products in the cart  
 */
 
-let balance = 0;
+let totalPaid = 0;
 
 // enable users to continue to pay down the bill
 function pay(amount) {
-  if(balance === 0) {
-    balance = -cartTotal();
-  };
-  balance += amount;
-  return balance;
+  totalPaid += amount;
+  const remaining = totalPaid - cartTotal();
+  if (remaining >= 0) {
+    emptyCart();
+    totalPaid = 0;
+  } //empties the cart and resets the cart
+  return remaining;
 }
 
 /* Place stand out suggestions here (stand out suggestions can be found at the bottom of the project rubric.)*/
